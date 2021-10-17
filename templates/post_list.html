@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+<style>{%block style%}
+h2 {
+    color: #192aa7;
+}
+.topright {
+	position: absolute; top: 5px; right: 5px; text-align: right;
+}
+{%endblock style%}</style>
+{%block content%}
+<h1>{{name}}</h1>
+<div class="topright">{{user}}</div>
+	<a href="{% url 'posts:create' %}" style="display: table; margin: 0 auto" class="btn btn-secondary btn-sm">Создать новый пост!</a>
+<hr>
+<div class="col-sm-8 col-sm-offset-2">
+	{% for i in queryset%}
+	<h2>{{i.title}}</h2>
+	<!--    <h2><a href="{{i.get_url}}">{{i.title}} </a></h2>-->
+	<!--    <h2> <a href="{% url 'posts:detail' id=i.id%}">{{i.title}} </a></h2>-->
+	<!--    <h2> <a href="/posts/detail/{{i.id}}/">{{i.title}} </a></h2>-->
+	<p>{{i.content| linebreaks | truncatewords:10}}</p>
+	<small><p><i>{{i.timestamp | timesince}}</i></p></small>
+	<small><p><i>{{i.post_author}}</i></p></small>
+	<p><a href="{{i.get_url}}" class="btn btn-primary" role="button">Читать</a></p>
+	<hr>
+	{% endfor%}
+</div>
+<p>&nbsp;</p>
+<div class="pagination">
+	<span class="step-links">
+		{%if queryset.has_previous%}
+		<a href="?page={{queryset.previous_page_number}} " type="button" class="btn btn-secondary btn-sm">Назад</a>
+		{%endif%}
+		<span class="current">
+			Страница {{ queryset.number}} из {{queryset.paginator.num_pages}}
+		</span>
+		{%if queryset.has_next%}
+		<a href="?page={{queryset.next_page_number}}" type="button" class="btn btn-secondary btn-sm">Вперед</a>
+		{%endif%}
+	</span>
+</div>
+<p>&nbsp;</p>
+{%endblock content%}

@@ -1,0 +1,27 @@
+{% extends 'base.html'%}
+<style>{%block style%}
+h3{
+    color: deepskyblue;
+}
+{%endblock style%}</style>
+{%block content%}
+<div>
+	<h1>{{instance.title}}</h1>
+	{%if instance.image%}
+	<p><img src="{{instance.image.url}}" class="img-resposive"></p>
+	{%endif%}
+	<p>{{instance.content | linebreaks }}</p>
+	<p>Likes {{instance.post_likes}}</p>
+	<p><i>Создан: {{instance.timestamp}} Обновлен: {{instance.updated}}</i></p>
+	<p>{{instance.post_author}}</p>
+</div>
+<hr>
+<a href="{% url 'posts:update' id=instance.id%}" type="button" class="btn btn-secondary btn-sm"> Редактировать</a>
+<a href="{% url 'posts:delete' id=instance.id%}" type="button" class="btn btn-secondary btn-sm"> Удалить</a>
+<hr>
+<p><i><a href="{% url 'posts:list'%}" type="button" class="btn btn-secondary btn-sm"> На главную страницу</a></i></p>
+<h3>Страдания..</h3>
+{%endblock content%}
+
+<!--href="{{i.get_url}}"-->
+<!--{% url 'post_edit' pk=post.pk %}-->

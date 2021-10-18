@@ -3,6 +3,10 @@
 h3{
     color: deepskyblue;
 }
+.comment{
+    border: 1px solid red;
+    padding: 10px;
+}
 {%endblock style%}</style>
 {%block content%}
 <div>
@@ -14,6 +18,32 @@ h3{
 	<p>Likes {{instance.post_likes}}</p>
 	<p><i>Создан: {{instance.timestamp}} Обновлен: {{instance.updated}}</i></p>
 	<p>{{instance.post_author}}</p>
+	{%if comment%}
+	<p>Комментарии:</p>
+	{%for i in comment%}
+	<div class="comment">
+		<p>{{forloop.counter}}</p>
+		<p>{{i.comment_text}}</p>
+		<hr>
+		<p>Создан: {{i.timepublish}}</p>
+	</div>
+	{%empty%}
+	<p>Пока нет комментариев</p>
+	{%endfor%}
+	{%endif%}
+	{% with comment.count as total_comments%}
+	<p><i>Всего комметариев:{{total_comments}}</i></p>
+	{%endwith%}
+	{%if new_comment%}
+	<p>Ваш комментарий был добавлен</p>
+	{%else%}
+	<h3>Добавить комментарий</h3>
+	<form method="POST" action="" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{comment_form.as_p}}
+		<input type="submit" value='Добавить комментарий'>
+	</form>
+	{%endif%}
 </div>
 <hr>
 <a href="{% url 'posts:update' id=instance.id%}" type="button" class="btn btn-secondary btn-sm"> Редактировать</a>
@@ -22,6 +52,3 @@ h3{
 <p><i><a href="{% url 'posts:list'%}" type="button" class="btn btn-secondary btn-sm"> На главную страницу</a></i></p>
 <h3>Страдания..</h3>
 {%endblock content%}
-
-<!--href="{{i.get_url}}"-->
-<!--{% url 'post_edit' pk=post.pk %}-->

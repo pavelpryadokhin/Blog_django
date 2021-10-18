@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from .models import Post,Author,Comments
-from .forms import PostForm
+from .forms import PostForm,CommentForm
 
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator
@@ -27,9 +27,22 @@ from django.core.paginator import Paginator
 
 def post_detail(request,id=None):
     instance=get_object_or_404(Post,id=id)
+    comment=instance.comments.filter(active=True)
+    new_comment = None
+    comment_form=CommentForm(data=request.POST  or None)
+    if request.method=='POST':
+        if comment_form.is_valid():
+            new_comment=comment_form.save(commit=False)
+            new_comment.comment_article=instance
+            new_comment.save()
+        else:
+            new_comment=CommentForm()
     content={
         'title':'post_detail',
-        'instance':instance
+        'instance':instance,
+        'comment': comment,
+        'new_comment':new_comment,
+        'comment_form':comment_form
     }
     return render(request, 'post_detail.html',content)
 

@@ -44,9 +44,9 @@ class Author(models.Model):
 class Comments(models.Model):
     id=models.AutoField(primary_key=True)
     comment_text=models.TextField('Комментарий')
-    comment_article=models.ForeignKey(Post,on_delete=models.CASCADE,verbose_name='Статья')
+    comment_article=models.ForeignKey(Post,on_delete=models.CASCADE,verbose_name='Статья',related_name='comments')
     timepublish=models.DateTimeField('Дата пуликации',auto_now=False, auto_now_add=True, blank=True, null=True )
-
+    active=models.BooleanField(default=True)
 
 
     class Meta:
